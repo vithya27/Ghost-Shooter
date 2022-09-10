@@ -45,8 +45,72 @@ class Projectile {
   }
 }
 
+// Create Enemies
+
+class Enemy {
+  constructor(x, y, radius, color, velocity) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.velocity = velocity;
+  }
+  drawProjectile() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+
+  update() {
+    this.drawProjectile();
+    this.x = this.x + this.velocity.x;
+    this.y = this.y + this.velocity.y;
+  }
+}
+
+const enemies = [];
+
+function createEnemies() {
+  // create enemies every 1 second
+  setInterval(() => {
+    const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
+
+    // target cannot be too small. sets a range 5-30
+    const radius = Math.random() * (30 - 5) + 5;
+
+    // must spawn outside the canvas and not too near the player itself.
+
+    let x;
+    let y;
+    if (Math.random() < 0.5) {
+      x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
+      y = Math.random() * canvas.height - 100;
+    } else {
+      x = Math.random() * canvas.width;
+      y = Math.random() < 0.5 ? 0 - radius : null;
+    }
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    console.log(color);
+
+    const angle = Math.atan2(canvas.height - y, canvas.width / 2 - x);
+
+    // set velocity
+    const velocity = {
+      x: Math.cos(angle),
+      y: Math.sin(angle),
+    };
+
+    enemies.push(new Enemy(x, y, radius, color, velocity));
+    console.log(enemies);
+  }, 2000);
+}
+
+createEnemies();
+
 // Create Player
-const player = new Player(canvas.width / 2, canvas.height, 40, "white");
+const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB");
 
 // Create projectile array to imitate a stream of bullets
 const projectiles = [];
@@ -61,6 +125,10 @@ function animate() {
   player.drawPlayer();
   projectiles.forEach((projectile) => {
     projectile.update();
+  });
+
+  enemies.forEach((enemy) => {
+    enemy.update();
   });
 }
 
@@ -80,7 +148,7 @@ addEventListener("click", (event) => {
     y: Math.sin(angle),
   };
 
-  console.log(angle);
+  // console.log(angle);
 
   projectiles.push(
     new Projectile(
