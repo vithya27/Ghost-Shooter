@@ -4,10 +4,14 @@ const ctx = canvas.getContext("2d");
 const statusbar_div = document.querySelector("statusbar");
 const cursor_div = document.querySelector(".cursor");
 const health_progress = document.getElementById("health");
+const score_span = document.getElementById("score");
+const startGame_button = document.getElementById("pause-game");
 
 // Make canvas full screen
 canvas.width = innerWidth;
-canvas.height = innerHeight;
+canvas.height = innerHeight - 50;
+
+// Pause Game/start Game
 
 // Create a viewfinder
 document.body.style.cursor = "none";
@@ -44,7 +48,6 @@ const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
 // Reduce health
 function reduceHealth() {
   player.health = player.health - 5;
-  console.log(player.health);
   health_progress.value = player.health;
 }
 
@@ -79,13 +82,13 @@ const projectiles = [];
 const particles = [];
 
 class Particle {
-  constructor(x, y, radius, color, velocity) {
+  constructor(x, y, radius, color, velocity, alpha = 0.01) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.velocity = velocity;
-    this.alpha = 0.05;
+    this.alpha = alpha;
   }
   drawParticle() {
     ctx.beginPath();
@@ -161,23 +164,28 @@ function createEnemies() {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-    console.log(enemies);
-  }, 1000);
+  }, 1500);
 }
 
 createEnemies();
 
 // Animate projectiles
+let requestID;
+let score = 0;
 function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-  ctx.fillStyle = "rgba(26, 14, 45,0.1)";
+
+  function startGame() {
+    console.log("start game");
+  }
+  ctx.fillStyle = "rgba(3, 8, 31,0.1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
   player.drawPlayer();
 
-  particles.forEach((particle) => {
+  particles.forEach((particle, index) => {
     particle.update();
     if (
       particle.x - particle.radius < 0 ||
@@ -227,23 +235,29 @@ function animate() {
       // projectile and enemy touch then remove that particular enemy and projectile.
       if (distance - enemy.radius - projectile.radius < 1) {
         // create explosion
-        for (let index = 0; index < enemy.radius; index++) {
+        for (let index = 0; index < enemy.radius / 2; index++) {
           particles.push(
             new Particle(
               projectile.x,
               projectile.y,
               Math.random() * 2,
               enemy.color,
-              { x: (Math.random() - 0.5) * 3, y: (Math.random() - 0.5) * 3 }
+              { x: (Math.random() - 0.5) * 5, y: (Math.random() - 0.5) * 5 },
+              undefined
             )
           );
         }
 
         // to prevent animate from trying to draw the removed items
         if (enemy.radius - 10 > 5) {
+          // score
+          score += 50;
+          score_span.innerHTML = `Score: ${score}`;
           enemy.radius -= 10;
           projectiles.splice(projectileIndex, 1);
         } else {
+          score += 150;
+          score_span.innerHTML = `Score: ${score}`;
           setTimeout(() => {
             enemies.splice(index, 1);
             projectiles.splice(projectileIndex, 1);

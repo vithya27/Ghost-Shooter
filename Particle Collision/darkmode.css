@@ -1,6 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+
 body {
   margin: 0;
   /* remove double click selection */
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  font-family: "Audiowide", cursive;
+}
+
+.header {
+  height: 30px;
+  width: 100%;
+  color: white;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(3, 8, 31, 1);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -38,4 +56,19 @@ progress::-webkit-progress-value {
   border-radius: 50%;
   border: 3px solid #e2f0cb;
   transition: all ease;
+}
+
+#score {
+  position: fixed;
+  color: white;
+  margin-left: 5px;
+  margin-top: 2px;
+}
+
+#start-game {
+  background-color: transparent;
+  border: white 1px solid;
+  color: white;
+  padding: 4px;
+  font-family: "Audiowide", cursive;
 }
