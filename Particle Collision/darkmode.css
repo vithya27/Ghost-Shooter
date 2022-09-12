@@ -25,9 +25,9 @@ progress::-webkit-progress-value {
   box-shadow: 1px 1px 5px 3px #0b2245;
 }
 
-#canvas {
-  background-color: #0b2245;
-}
+/* #canvas {
+  background-color: #081933;
+} */
 
 .cursor {
   width: 30px;

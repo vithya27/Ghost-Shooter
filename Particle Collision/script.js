@@ -46,7 +46,6 @@ function reduceHealth() {
   player.health = player.health - 5;
   console.log(player.health);
   health_progress.value = player.health;
-  // health_progress.innerText = player.health;
 }
 
 // Create Projectiles class
@@ -76,20 +75,19 @@ class Projectile {
 // Create projectile array to imitate a stream of bullets
 const projectiles = [];
 
-// Create Enemies
+// Create particles
+const particles = [];
 
-class Enemy {
-  constructor(x, y, radius, color, velocity, health) {
+class Particle {
+  constructor(x, y, radius, color, velocity) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.velocity = velocity;
-    this.health = health;
+    this.alpha = 0.05;
   }
-
-  // same logic as projectiles
-  drawProjectile() {
+  drawParticle() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     ctx.fillStyle = this.color;
@@ -97,7 +95,33 @@ class Enemy {
   }
 
   update() {
-    this.drawProjectile();
+    this.drawParticle();
+    this.x = this.x + this.velocity.x;
+    this.y = this.y + this.velocity.y;
+  }
+}
+
+// Create Enemies
+
+class Enemy {
+  constructor(x, y, radius, color, velocity) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.velocity = velocity;
+  }
+
+  // same logic as projectiles
+  drawEnemy() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+
+  update() {
+    this.drawEnemy();
     this.x = this.x + this.velocity.x;
     this.y = this.y + this.velocity.y;
   }
@@ -132,13 +156,13 @@ function createEnemies() {
 
     // set velocity
     const velocity = {
-      x: Math.cos(angle),
-      y: Math.sin(angle),
+      x: Math.cos(angle) * 1.5,
+      y: Math.sin(angle) * 1.5,
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
     console.log(enemies);
-  }, 1500);
+  }, 1000);
 }
 
 createEnemies();
@@ -148,11 +172,38 @@ function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(26, 14, 45,0.1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
   player.drawPlayer();
-  projectiles.forEach((projectile) => {
+
+  particles.forEach((particle) => {
+    particle.update();
+    if (
+      particle.x - particle.radius < 0 ||
+      particle.x + particle.radius > canvas.width ||
+      particle.y + particle.radius < 0 ||
+      particle.y - particle.radius > canvas.height
+    ) {
+      setTimeout(() => {
+        particles.splice(index, 1);
+      }, 0);
+    }
+  });
+
+  projectiles.forEach((projectile, index) => {
     projectile.update();
+    // remove projectiles from edge of screen
+    if (
+      projectile.x - projectile.radius < 0 ||
+      projectile.x + projectile.radius > canvas.width ||
+      projectile.y + projectile.radius < 0 ||
+      projectile.y - projectile.radius > canvas.height
+    ) {
+      setTimeout(() => {
+        projectiles.splice(index, 1);
+      }, 0);
+    }
   });
 
   enemies.forEach((enemy, index) => {
@@ -173,13 +224,31 @@ function animate() {
         projectile.x - enemy.x,
         projectile.y - enemy.y
       );
-      // objects touch then remove that particular enemy and projectile.
+      // projectile and enemy touch then remove that particular enemy and projectile.
       if (distance - enemy.radius - projectile.radius < 1) {
+        // create explosion
+        for (let index = 0; index < enemy.radius; index++) {
+          particles.push(
+            new Particle(
+              projectile.x,
+              projectile.y,
+              Math.random() * 2,
+              enemy.color,
+              { x: (Math.random() - 0.5) * 3, y: (Math.random() - 0.5) * 3 }
+            )
+          );
+        }
+
         // to prevent animate from trying to draw the removed items
-        setTimeout(() => {
-          enemies.splice(index, 1);
+        if (enemy.radius - 10 > 5) {
+          enemy.radius -= 10;
           projectiles.splice(projectileIndex, 1);
-        }, 0);
+        } else {
+          setTimeout(() => {
+            enemies.splice(index, 1);
+            projectiles.splice(projectileIndex, 1);
+          }, 0);
+        }
       }
     });
   });
@@ -202,8 +271,8 @@ addEventListener("click", (event) => {
 
   // set velocity
   const velocity = {
-    x: Math.cos(angle),
-    y: Math.sin(angle),
+    x: Math.cos(angle) * 2,
+    y: Math.sin(angle) * 2,
   };
 
   // console.log(angle);
