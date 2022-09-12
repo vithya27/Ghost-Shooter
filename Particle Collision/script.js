@@ -3,6 +3,7 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const statusbar_div = document.querySelector("statusbar");
 const cursor_div = document.querySelector(".cursor");
+let health_progress = document.getElementById("health");
 
 // Make canvas full screen
 canvas.width = innerWidth;
@@ -147,6 +148,12 @@ function animate() {
 
   enemies.forEach((enemy, index) => {
     enemy.update();
+
+    // calculate distance between player and enemy
+    const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+    if (distance - enemy.radius - player.radius < 1) {
+      console.log("- health points");
+    }
 
     // test distance between each of the projectiles in the parojectile array.
     // Math.hypot tests distance between two items

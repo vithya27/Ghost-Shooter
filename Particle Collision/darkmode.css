@@ -7,8 +7,22 @@ body {
   -ms-user-select: none;
 }
 
-#statusbar {
+#health {
+  border-radius: 1px;
+  height: 20px;
+  width: 100%;
+  color: #e2f0cb;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+progress::-webkit-progress-bar {
   background-color: #0b2245;
+  border-radius: 7px;
+}
+progress::-webkit-progress-value {
+  background-color: #e2f0cb;
+  border-radius: 7px;
+  box-shadow: 1px 1px 5px 3px #0b2245;
 }
 
 #canvas {
