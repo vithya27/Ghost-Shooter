@@ -1,10 +1,24 @@
-//Query Selectors
+// Query Selectors
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const statusbar_div = document.querySelector("statusbar");
+const cursor_div = document.querySelector(".cursor");
 
 // Make canvas full screen
 canvas.width = innerWidth;
 canvas.height = innerHeight;
+
+// Create a viewfinder
+document.body.style.cursor = "none";
+
+function moveMouse(e) {
+  const x = e.clientX;
+  const y = e.clientY;
+
+  cursor_div.style.transform = `translate(${x - 15}px, ${y - 15}px)`;
+}
+
+document.addEventListener("mousemove", moveMouse);
 
 // Create Player Class
 class Player {
@@ -76,8 +90,8 @@ function createEnemies() {
   setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
 
-    // target cannot be too small. sets a range 5-30
-    const radius = Math.random() * (30 - 5) + 5;
+    // target cannot be too small. sets a range 7-30
+    const radius = Math.random() * (30 - 7) + 7;
 
     // must spawn outside the canvas and not too near the player itself.
 
@@ -92,7 +106,6 @@ function createEnemies() {
     }
 
     const color = colors[Math.floor(Math.random() * colors.length)];
-    console.log(color);
 
     const angle = Math.atan2(canvas.height - y, canvas.width / 2 - x);
 
@@ -156,7 +169,7 @@ addEventListener("click", (event) => {
       canvas.width / 2,
       canvas.height,
       5,
-      "red",
+      "white",
       velocity
     )
   );

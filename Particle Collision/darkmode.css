@@ -1,7 +1,26 @@
 body {
   margin: 0;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+#statusbar {
+  background-color: #0b2245;
 }
 
 #canvas {
   background-color: #0b2245;
+}
+
+.cursor {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  border: 3px solid #e2f0cb;
+  transition: all ease;
 }
