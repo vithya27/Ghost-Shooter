@@ -3,7 +3,7 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const statusbar_div = document.querySelector("statusbar");
 const cursor_div = document.querySelector(".cursor");
-let health_progress = document.getElementById("health");
+const health_progress = document.getElementById("health");
 
 // Make canvas full screen
 canvas.width = innerWidth;
@@ -40,6 +40,14 @@ class Player {
 
 // Create Player
 const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
+
+// Reduce health
+function reduceHealth() {
+  player.health = player.health - 5;
+  console.log(player.health);
+  health_progress.value = player.health;
+  // health_progress.innerText = player.health;
+}
 
 // Create Projectiles class
 
@@ -96,10 +104,11 @@ class Enemy {
 }
 
 const enemies = [];
+let interval;
 
 function createEnemies() {
   // create enemies every 1 second
-  setInterval(() => {
+  interval = setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
 
     // target cannot be too small. sets a range 7-30
@@ -137,7 +146,7 @@ createEnemies();
 // Animate projectiles
 function animate() {
   // to loop animate over and over again
-  requestAnimationFrame(animate);
+  const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
@@ -148,11 +157,13 @@ function animate() {
 
   enemies.forEach((enemy, index) => {
     enemy.update();
-
-    // calculate distance between player and enemy
     const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+    // console.log(distance - enemy.radius - player.radius);
+    // calculate distance between player and enemy
+
     if (distance - enemy.radius - player.radius < 1) {
-      console.log("- health points");
+      enemies.splice(index, 1);
+      reduceHealth();
     }
 
     // test distance between each of the projectiles in the parojectile array.
@@ -172,6 +183,11 @@ function animate() {
       }
     });
   });
+
+  if (player.health === 0) {
+    cancelAnimationFrame(requestID);
+    clearInterval(interval);
+  }
 }
 
 // Add Event Listener for click event and take the projectile and pass into array to simulate bullets
