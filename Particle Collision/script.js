@@ -22,11 +22,12 @@ document.addEventListener("mousemove", moveMouse);
 
 // Create Player Class
 class Player {
-  constructor(x, y, radius, color) {
+  constructor(x, y, radius, color, health) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
+    this.health = health;
   }
   drawPlayer() {
     ctx.beginPath();
@@ -36,7 +37,11 @@ class Player {
   }
 }
 
+// Create Player
+const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
+
 // Create Projectiles class
+
 class Projectile {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -59,16 +64,22 @@ class Projectile {
   }
 }
 
+// Create projectile array to imitate a stream of bullets
+const projectiles = [];
+
 // Create Enemies
 
 class Enemy {
-  constructor(x, y, radius, color, velocity) {
+  constructor(x, y, radius, color, velocity, health) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.velocity = velocity;
+    this.health = health;
   }
+
+  // same logic as projectiles
   drawProjectile() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -91,7 +102,7 @@ function createEnemies() {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
 
     // target cannot be too small. sets a range 7-30
-    const radius = Math.random() * (30 - 7) + 7;
+    const radius = Math.random() * (30 - 10) + 10;
 
     // must spawn outside the canvas and not too near the player itself.
 
@@ -117,20 +128,14 @@ function createEnemies() {
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
     console.log(enemies);
-  }, 2000);
+  }, 1500);
 }
 
 createEnemies();
 
-// Create Player
-const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB");
-
-// Create projectile array to imitate a stream of bullets
-const projectiles = [];
-
 // Animate projectiles
 function animate() {
-  // to loop animateProjectiles over and over again
+  // to loop animate over and over again
   requestAnimationFrame(animate);
   // to see each individual particle drawn.
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -140,8 +145,25 @@ function animate() {
     projectile.update();
   });
 
-  enemies.forEach((enemy) => {
+  enemies.forEach((enemy, index) => {
     enemy.update();
+
+    // test distance between each of the projectiles in the parojectile array.
+    // Math.hypot tests distance between two items
+    projectiles.forEach((projectile, projectileIndex) => {
+      const distance = Math.hypot(
+        projectile.x - enemy.x,
+        projectile.y - enemy.y
+      );
+      // objects touch then remove that particular enemy and projectile.
+      if (distance - enemy.radius - projectile.radius < 1) {
+        // to prevent animate from trying to draw the removed items
+        setTimeout(() => {
+          enemies.splice(index, 1);
+          projectiles.splice(projectileIndex, 1);
+        }, 0);
+      }
+    });
   });
 }
 
@@ -169,7 +191,7 @@ addEventListener("click", (event) => {
       canvas.width / 2,
       canvas.height,
       5,
-      "white",
+      "#e2f0cb",
       velocity
     )
   );
