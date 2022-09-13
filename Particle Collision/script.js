@@ -5,7 +5,17 @@ const statusbar_div = document.querySelector("statusbar");
 const cursor_div = document.querySelector(".cursor");
 const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
-const startGame_button = document.getElementById("pause-game");
+// const modal_container = document.querySelector(".modal-container");
+// const startGame_button = document.getElementById("start-game");
+
+// // start game modal
+// addEventListener("load", () => {
+//   modal_container.classList.add("show");
+// });
+
+// startGame_button.addEventListener("click", () => {
+//   modal_container.classList.remove("show");
+// });
 
 // Make canvas full screen
 canvas.width = innerWidth;

@@ -3,10 +3,10 @@
 body {
   margin: 0;
   /* remove double click selection */
-  user-select: none;
+  /* user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
+  -ms-user-select: none; */
   font-family: "Audiowide", cursive;
 }
 
@@ -19,10 +19,34 @@ body {
   align-items: center;
   background-color: rgba(3, 8, 31, 1);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
-  user-select: none;
+  /* user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
+  -ms-user-select: none; */
+}
+
+/* .modal-container {
+  display:none;
+  position: fixed;
+  background: (0,0,0,0.5);
+  top: 0;
+
+} */
+
+#start-game {
+  background-color: rgba(3, 8, 31, 0.2);
+  border: white 1px solid;
+  color: white;
+  padding: 4px;
+  font-family: "Audiowide", cursive;
+}
+
+#start-game :hover {
+  background-color: white;
+  border: rgba(3, 8, 31, 1) 1px solid;
+  color: rgba(3, 8, 31, 1);
+  padding: 4px;
+  font-family: "Audiowide", cursive;
 }
 
 #health {
@@ -63,12 +87,4 @@ progress::-webkit-progress-value {
   color: white;
   margin-left: 5px;
   margin-top: 2px;
-}
-
-#start-game {
-  background-color: transparent;
-  border: white 1px solid;
-  color: white;
-  padding: 4px;
-  font-family: "Audiowide", cursive;
 }

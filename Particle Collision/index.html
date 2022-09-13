@@ -8,16 +8,43 @@
     <title>Particle Collision</title>
   </head>
   <body>
-    
-    <div class ="header">
-      <button type = "button" id = "start-game">Start Game</button>
+    <div class="header">
+      <!-- <button type="button" id="start-game">Start Game</button> -->
+
       <p>lightmode/darkmode toggle</p>
     </div>
 
+    <!-- <div class="modal-container">
+      <div class="modal">
+        <h1>Particle Collision</h1>
+        <p>
+          1. Shoot the particles as they come towards you
+          <br />
+          <br />
+          2. Bigger particles require more bullets
+          <br />
+          <br />
+          3. Everytime you hit a particle, you get 50 points. If the particle is
+          completely shattered, you earn 150 points.
+          <br />
+          <br />
+          4. You have 100 health points. If the particle touches you, you will
+          lose 5 health points.
+          <br />
+          <br />
+          5. To restore 10 health points, do not shoot the heart if it appears.
+        </p>
+        <br />
+        <button type="button" id="start-game">Start Game</button>
+        <br />
+      </div>
+    </div> -->
+
     <progress id="health" value="100" min="0" max="100"></progress>
+
     <div id="score">Score: <span id="score">0</span></div>
+
     <canvas id="canvas"></canvas>
-    </div>
 
     <div class="cursor"></div>
 
