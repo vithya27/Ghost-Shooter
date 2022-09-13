@@ -350,6 +350,8 @@ function restart() {
   score = 0;
   score_span.innerHTML = `Score: ${score}`;
   finalScore_h2.innerHTML = score;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 restart_button &&
