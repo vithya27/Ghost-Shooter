@@ -1,5 +1,3 @@
-console.log("running");
-
 // Query Selectors
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -9,18 +7,14 @@ const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
 const damage = document.getElementById("flash-red");
 const modal_container = document.querySelector(".modal-container");
-const startGame_button = document.getElementById("start-game");
+// const startGame_button = document.getElementById("start-game");
 const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.querySelector("restart");
 
 // start game modal
-startGame_button.addEventListener("click", () => {
+addEventListener("load", () => {
   modal_container.classList.add("show");
-});
-
-startGame2_button.addEventListener("click", () => {
-  modal_container.classList.remove("show");
 });
 
 // End game modal
@@ -200,8 +194,6 @@ function createEnemies() {
   }, 1500);
 }
 
-createEnemies();
-
 // Animate projectiles
 let requestID;
 let score = 0;
@@ -333,4 +325,8 @@ addEventListener("click", (event) => {
   );
 });
 
-animate();
+startGame2_button.addEventListener("click", () => {
+  animate();
+  createEnemies();
+  modal_container.classList.remove("show");
+});

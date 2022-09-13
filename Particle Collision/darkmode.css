@@ -2,6 +2,7 @@
 
 body {
   margin: 0;
+  background-color: rgba(3, 8, 31, 1);
   /* remove double click selection */
   user-select: none;
   -moz-user-select: none;
@@ -31,8 +32,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vh;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: none;
 }
 
@@ -43,8 +44,8 @@ body {
   justify-content: center;
   text-align: center;
   position: fixed;
-  width: 100vh;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(3, 8, 31, 0.2);
 }
 
@@ -58,7 +59,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 5px auto;
+  padding: 20px;
 }
 
 #start-game,
@@ -70,6 +71,7 @@ body {
   color: white;
   padding: 4px;
   font-family: "Audiowide", cursive;
+  font-size: 20px;
 }
 
 #start-game:hover,
