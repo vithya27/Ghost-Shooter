@@ -25,11 +25,9 @@ startGame2_button.addEventListener("click", () => {
 
 // End game modal
 
-
 // Make canvas full screen
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
-
 
 // Create a viewfinder
 // document.body.style.cursor = "none";
@@ -52,12 +50,15 @@ class Player {
     this.color = color;
     this.health = health;
 
-    // const image = new Image();
-    // image.src = "img/shipBlue_manned.png";
+    this.image = new Image();
+    this.image.src = "img/planet3.png";
 
     // this.image = image;
-    // this.width = 100;
-    // this.height = 100;
+    this.image.onload = () => {
+      this.isLoaded = true;
+    };
+    this.width = 100;
+    this.height = 100;
   }
 
   drawPlayer() {
@@ -65,7 +66,7 @@ class Player {
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     ctx.fillStyle = this.color;
     ctx.fill();
-    // ctx.drawImage(this.image, this.x, this.y);
+    this.isLoaded && ctx.drawImage(this.image, this.x - 100, this.y - 100);
   }
 }
 
@@ -298,6 +299,7 @@ function animate() {
   if (player.health === 0) {
     cancelAnimationFrame(requestID);
     clearInterval(interval);
+    gameover_modal.classList.add("show");
   }
 }
 

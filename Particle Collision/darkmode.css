@@ -48,7 +48,8 @@ body {
   background-color: rgba(3, 8, 31, 0.2);
 }
 
-.modal {
+.modal,
+.gameover {
   color: white;
   background-color: rgba(3, 8, 31, 1);
   border-radius: 5px;
@@ -57,10 +58,12 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 5px auto;
 }
 
 #start-game,
-#start-game2 {
+#start-game2,
+#restart {
   background-color: rgba(3, 8, 31, 0.2);
   border: white 1px solid;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
@@ -70,7 +73,8 @@ body {
 }
 
 #start-game:hover,
-#start-game2:hover {
+#start-game2:hover,
+#restart:hover {
   background-color: white;
   border: rgba(3, 8, 31, 1) 1px solid;
   color: rgba(3, 8, 31, 1);
