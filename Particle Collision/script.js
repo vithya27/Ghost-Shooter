@@ -10,14 +10,13 @@ const modal_container = document.querySelector(".modal-container");
 // const startGame_button = document.getElementById("start-game");
 const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
-const restart_button = document.querySelector("restart");
+const restart_button = document.getElementById("restart");
+const finalScore_h2 = document.querySelector(".finalScore");
 
 // start game modal
 addEventListener("load", () => {
   modal_container.classList.add("show");
 });
-
-// End game modal
 
 // Make canvas full screen
 canvas.width = innerWidth;
@@ -64,9 +63,6 @@ class Player {
   }
 }
 
-// Create Player
-const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
-
 let playerDamage;
 // Reduce health
 function reduceHealth() {
@@ -101,12 +97,6 @@ class Projectile {
     this.y = this.y + this.velocity.y;
   }
 }
-
-// Create projectile array to imitate a stream of bullets
-const projectiles = [];
-
-// Create particles
-const particles = [];
 
 class Particle {
   constructor(x, y, radius, color, velocity, alpha = 0.01) {
@@ -157,7 +147,18 @@ class Enemy {
   }
 }
 
-const enemies = [];
+// Create projectile array to imitate a stream of bullets
+let projectiles = [];
+
+// Create particles array
+let particles = [];
+
+// Create enemies array
+let enemies = [];
+
+// Create Player
+let player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
+
 let interval;
 
 function createEnemies() {
@@ -191,7 +192,7 @@ function createEnemies() {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-  }, 1500);
+  }, 2000);
 }
 
 // Animate projectiles
@@ -288,10 +289,12 @@ function animate() {
     });
   });
 
+  // end game
   if (player.health === 0) {
     cancelAnimationFrame(requestID);
     clearInterval(interval);
     gameover_modal.classList.add("show");
+    finalScore_h2.innerHTML = score;
   }
 }
 
@@ -307,8 +310,8 @@ addEventListener("click", (event) => {
 
   // set velocity
   const velocity = {
-    x: Math.cos(angle) * 2,
-    y: Math.sin(angle) * 2,
+    x: Math.cos(angle) * 3,
+    y: Math.sin(angle) * 3,
   };
 
   // console.log(angle);
@@ -330,3 +333,29 @@ startGame2_button.addEventListener("click", () => {
   createEnemies();
   modal_container.classList.remove("show");
 });
+
+function restart() {
+  // Create Player
+  player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
+
+  // Create projectile array to imitate a stream of bullets
+  projectiles = [];
+
+  // Create particles array
+  particles = [];
+
+  // Create enemies array
+  enemies = [];
+
+  score = 0;
+  score_span.innerHTML = `Score: ${score}`;
+  finalScore_h2.innerHTML = score;
+}
+
+restart_button &&
+  restart_button.addEventListener("click", () => {
+    gameover_modal.classList.remove("show");
+    restart();
+    animate();
+    createEnemies();
+  });
