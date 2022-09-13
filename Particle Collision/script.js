@@ -1,3 +1,5 @@
+console.log("running");
+
 // Query Selectors
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -5,35 +7,41 @@ const statusbar_div = document.querySelector("statusbar");
 const cursor_div = document.querySelector(".cursor");
 const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
-// const modal_container = document.querySelector(".modal-container");
-// const startGame_button = document.getElementById("start-game");
+const damage = document.getElementById("flash-red");
+const modal_container = document.querySelector(".modal-container");
+const startGame_button = document.getElementById("start-game");
+const startGame2_button = document.getElementById("start-game2");
+const gameover_modal = document.querySelector(".gameover-container");
+const restart_button = document.querySelector("restart");
 
-// // start game modal
-// addEventListener("load", () => {
-//   modal_container.classList.add("show");
-// });
+// start game modal
+startGame_button.addEventListener("click", () => {
+  modal_container.classList.add("show");
+});
 
-// startGame_button.addEventListener("click", () => {
-//   modal_container.classList.remove("show");
-// });
+startGame2_button.addEventListener("click", () => {
+  modal_container.classList.remove("show");
+});
+
+// End game modal
+
 
 // Make canvas full screen
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
 
-// Pause Game/start Game
 
 // Create a viewfinder
-document.body.style.cursor = "none";
+// document.body.style.cursor = "none";
 
-function moveMouse(e) {
-  const x = e.clientX;
-  const y = e.clientY;
+// function moveMouse(e) {
+//   const x = e.clientX;
+//   const y = e.clientY;
 
-  cursor_div.style.transform = `translate(${x - 15}px, ${y - 15}px)`;
-}
+//   cursor_div.style.transform = `translate(${x - 15}px, ${y - 15}px)`;
+// }
 
-document.addEventListener("mousemove", moveMouse);
+// document.addEventListener("mousemove", moveMouse);
 
 // Create Player Class
 class Player {
@@ -43,22 +51,36 @@ class Player {
     this.radius = radius;
     this.color = color;
     this.health = health;
+
+    // const image = new Image();
+    // image.src = "img/shipBlue_manned.png";
+
+    // this.image = image;
+    // this.width = 100;
+    // this.height = 100;
   }
+
   drawPlayer() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     ctx.fillStyle = this.color;
     ctx.fill();
+    // ctx.drawImage(this.image, this.x, this.y);
   }
 }
 
 // Create Player
 const player = new Player(canvas.width / 2, canvas.height, 40, "#E2F0CB", 100);
 
+let playerDamage;
 // Reduce health
 function reduceHealth() {
   player.health = player.health - 5;
   health_progress.value = player.health;
+  damage.classList.add("player-damage");
+  setTimeout(function () {
+    damage.classList.remove("player-damage");
+  }, 400);
 }
 
 // Create Projectiles class
@@ -186,10 +208,6 @@ function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-
-  function startGame() {
-    console.log("start game");
-  }
   ctx.fillStyle = "rgba(3, 8, 31,0.1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out

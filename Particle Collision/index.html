@@ -9,12 +9,12 @@
   </head>
   <body>
     <div class="header">
-      <!-- <button type="button" id="start-game">Start Game</button> -->
+      <button type="button" id="start-game">Start Game</button>
 
       <p>lightmode/darkmode toggle</p>
     </div>
 
-    <!-- <div class="modal-container">
+    <div class="modal-container">
       <div class="modal">
         <h1>Particle Collision</h1>
         <p>
@@ -35,10 +35,10 @@
           5. To restore 10 health points, do not shoot the heart if it appears.
         </p>
         <br />
-        <button type="button" id="start-game">Start Game</button>
+        <button type="button" id="start-game2">Start Game</button>
         <br />
       </div>
-    </div> -->
+    </div>
 
     <progress id="health" value="100" min="0" max="100"></progress>
 
@@ -47,6 +47,19 @@
     <canvas id="canvas"></canvas>
 
     <div class="cursor"></div>
+
+    <div id="flash-red"></div>
+
+    <div class="gameover-container">
+      <div class="modal">
+        <h1>Game Over</h1>
+        <h2>Score</h2>
+        <p>**</p>
+        <br />
+        <button type="button" id="restart">Start Game</button>
+        <br />
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
