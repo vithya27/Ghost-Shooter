@@ -166,7 +166,7 @@ let interval;
 function createEnemies(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
-    const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
+    const colors = ["#D5668F", "#EF946A", "#F0D368", "#79C569", "#6093D7"];
 
     // target cannot be too small. sets a range 7-30
     const radius = Math.random() * (30 - 10) + 10;
@@ -195,7 +195,7 @@ function createEnemies(intervalTime) {
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
   }, intervalTime);
-
+}
 
 // Animate projectiles
 let requestID;
@@ -321,7 +321,7 @@ addEventListener("click", (event) => {
       canvas.width / 2,
       canvas.height,
       5,
-      "#e2f0cb",
+      "#8E58C1",
       velocity
     )
   );
