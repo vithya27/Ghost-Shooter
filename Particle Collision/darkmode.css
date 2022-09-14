@@ -107,10 +107,6 @@ progress::-webkit-progress-value {
   box-shadow: 1px 1px 5px 3px #0b2245;
 }
 
-#canvas {
-  cursor: url("img/center.png");
-}
-
 #score {
   position: fixed;
   color: white;

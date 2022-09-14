@@ -7,7 +7,6 @@ const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
 const damage = document.getElementById("flash-red");
 const modal_container = document.querySelector(".modal-container");
-// const startGame_button = document.getElementById("start-game");
 const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.getElementById("restart");
@@ -22,8 +21,7 @@ addEventListener("load", () => {
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
 
-// Create a viewfinder
-// document.body.style.cursor = "none";
+// // Create a viewfinder
 
 // function moveMouse(e) {
 //   const x = e.clientX;
@@ -168,7 +166,7 @@ let interval;
 function createEnemies(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
-    const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
+    const colors = ["#D5668F", "#EF946A", "#F0D368", "#79C569", "#6093D7"];
 
     // target cannot be too small. sets a range 7-30
     const radius = Math.random() * (30 - 10) + 10;
@@ -196,11 +194,7 @@ function createEnemies(intervalTime) {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-<<<<<<< Updated upstream
-  }, 2000);
-=======
   }, intervalTime);
->>>>>>> Stashed changes
 }
 
 // Animate projectiles
@@ -327,7 +321,7 @@ addEventListener("click", (event) => {
       canvas.width / 2,
       canvas.height,
       5,
-      "#e2f0cb",
+      "#8E58C1",
       velocity
     )
   );
