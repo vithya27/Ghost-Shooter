@@ -7,7 +7,6 @@ const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
 const damage = document.getElementById("flash-red");
 const modal_container = document.querySelector(".modal-container");
-// const startGame_button = document.getElementById("start-game");
 const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.getElementById("restart");
@@ -22,8 +21,7 @@ addEventListener("load", () => {
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
 
-// Create a viewfinder
-// document.body.style.cursor = "none";
+// // Create a viewfinder
 
 // function moveMouse(e) {
 //   const x = e.clientX;
@@ -196,12 +194,8 @@ function createEnemies(intervalTime) {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-<<<<<<< Updated upstream
-  }, 2000);
-=======
   }, intervalTime);
->>>>>>> Stashed changes
-}
+
 
 // Animate projectiles
 let requestID;
