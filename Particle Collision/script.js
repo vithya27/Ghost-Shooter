@@ -7,7 +7,6 @@ const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
 const damage = document.getElementById("flash-red");
 const modal_container = document.querySelector(".modal-container");
-// const startGame_button = document.getElementById("start-game");
 const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.getElementById("restart");
