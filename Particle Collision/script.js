@@ -192,7 +192,7 @@ function createEnemies() {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-  }, 2000);
+  }, 1500);
 }
 
 // Animate projectiles
