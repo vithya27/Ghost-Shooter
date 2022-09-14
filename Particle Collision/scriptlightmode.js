@@ -21,6 +21,14 @@ addEventListener("load", () => {
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
 
+// Dark mode/light mode
+function darkModeFiles() {
+  stylesheet.setAttribute("href", "darkmode.css");
+  jsfile.setAttribute("src", "script.js");
+  console.log(stylesheet);
+  console.log(jsfile);
+}
+
 // // Create a viewfinder
 
 // function moveMouse(e) {

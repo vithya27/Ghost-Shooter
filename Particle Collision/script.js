@@ -12,6 +12,8 @@ const startGame2_button = document.getElementById("start-game2");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.getElementById("restart");
 const finalScore_h2 = document.querySelector(".finalScore");
+const stylesheet = document.querySelector("#style");
+const jsfile = document.querySelector("#script");
 
 // start game modal
 addEventListener("load", () => {
@@ -22,17 +24,15 @@ addEventListener("load", () => {
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
 
-// Create a viewfinder
-// document.body.style.cursor = "none";
-
-// function moveMouse(e) {
-//   const x = e.clientX;
-//   const y = e.clientY;
-
-//   cursor_div.style.transform = `translate(${x - 15}px, ${y - 15}px)`;
+// Dark mode/light mode
+// function lightModeFiles() {
+//   stylesheet.setAttribute("href", "lightmode.css");
+//   jsfile.setAttribute("src", "scriptdarkmode.js");
+//   console.log(stylesheet);
+//   console.log(jsfile);
 // }
 
-// document.addEventListener("mousemove", moveMouse);
+// lightModeFiles();
 
 // Create Player Class
 class Player {
@@ -151,6 +151,73 @@ class Enemy {
   }
 }
 
+class Heart {
+  constructor(x, y, width, height, color = "red", velocity) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.velocity = velocity;
+  }
+
+  // Draw heart
+  drawHeart() {
+    ctx.beginPath();
+    let topCurveHeight = this.height * 0.3;
+    ctx.moveTo(this.x, this.y + topCurveHeight);
+    // top left curve
+    ctx.bezierCurveTo(
+      this.x,
+      this.y,
+      this.x - this.width / 2,
+      this.y,
+      this.x - this.width / 2,
+      this.y + topCurveHeight
+    );
+
+    // bottom left curve
+    ctx.bezierCurveTo(
+      this.x - this.width / 2,
+      this.y + (this.height + topCurveHeight) / 2,
+      this.x,
+      this.y + (this.height + topCurveHeight) / 2,
+      this.x,
+      this.y + this.height
+    );
+
+    // bottom right curve
+    ctx.bezierCurveTo(
+      this.x,
+      this.y + (this.height + topCurveHeight) / 2,
+      this.x + this.width / 2,
+      this.y + (this.height + topCurveHeight) / 2,
+      this.x + this.width / 2,
+      this.y + topCurveHeight
+    );
+
+    // top right curve
+    ctx.bezierCurveTo(
+      this.x + this.width / 2,
+      this.y,
+      this.x,
+      this.y,
+      this.x,
+      this.y + topCurveHeight
+    );
+
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+
+  update() {
+    this.drawHeart();
+    this.x = this.x + this.velocity.x;
+    this.y = this.y + this.velocity.y;
+  }
+}
+
 // Create projectile array to imitate a stream of bullets
 let projectiles = [];
 
@@ -160,6 +227,7 @@ let particles = [];
 // Create enemies array
 let enemies = [];
 
+let hearts = [];
 // Create Player
 let player = new Player(canvas.width / 2, canvas.height, 40, 100);
 
@@ -196,11 +264,35 @@ function createEnemies(intervalTime) {
     };
 
     enemies.push(new Enemy(x, y, radius, color, velocity));
-<<<<<<< Updated upstream
-  }, 2000);
-=======
   }, intervalTime);
->>>>>>> Stashed changes
+}
+
+let heartInterval;
+
+function createHearts() {
+  clearInterval(heartInterval);
+  heartInterval = setInterval(() => {
+    // must spawn outside the canvas and not too near the player itself.
+    let x;
+    let y;
+    if (Math.random() < 0.5) {
+      x = Math.random() < 0.5 ? 0 - width : canvas.width + width;
+      y = Math.random() * canvas.height - height;
+    } else {
+      x = Math.random() * canvas.width;
+      y = Math.random() < 0.5 ? 0 - height : null;
+    }
+
+    const angle = Math.atan2(canvas.height - y, canvas.width / 2 - x);
+
+    // set velocity
+    const velocity = {
+      x: Math.cos(angle) * 1.5,
+      y: Math.sin(angle) * 1.5,
+    };
+
+    hearts.push(new Heart(x, y, 50, 50, undefined, velocity));
+  }, 10000);
 }
 
 // Animate projectiles
@@ -242,6 +334,28 @@ function animate() {
         projectiles.splice(index, 1);
       }, 0);
     }
+  });
+
+  hearts.forEach((heart, index) => {
+    heart.update();
+    const distance = Math.hypot(player.x - heart.x, player.y - heart.y);
+    // console.log(distance - enemy.radius - player.radius);
+    // calculate distance between player and enemy
+
+    if (distance - heart.height - player.radius < 1) {
+      hearts.splice(index, 1);
+      increaseHealth();
+    }
+    projectiles.forEach((projectile, projectileIndex) => {
+      const distance = Math.hypot(
+        projectile.x - heart.x,
+        projectile.y - heart.y
+      );
+      if (distance - heart.height - projectile.radius < 1) {
+        hearts.splice(index, 1);
+        projectile.splice(projectileIndex, 1);
+      }
+    });
   });
 
   enemies.forEach((enemy, index) => {
@@ -337,6 +451,7 @@ startGame2_button.addEventListener("click", () => {
   modal_container.classList.remove("show");
   animate();
   createEnemies(3000);
+  createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
@@ -357,6 +472,8 @@ function restart() {
   // Create enemies array
   enemies = [];
 
+  hearts = [];
+
   score = 0;
   score_span.innerHTML = `Score: ${score}`;
   finalScore_h2.innerHTML = score;
@@ -369,5 +486,9 @@ restart_button &&
     gameover_modal.classList.remove("show");
     restart();
     animate();
-    createEnemies();
+    createEnemies(3000);
+    createHearts();
+    setTimeout(() => {
+      createEnemies(1500);
+    }, 10000);
   });
