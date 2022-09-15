@@ -13,6 +13,7 @@ const restart_button = document.getElementById("restart");
 const finalScore_h2 = document.querySelector(".finalScore");
 const stylesheet = document.querySelector("#style");
 const jsfile = document.querySelector("#script");
+const gunSound_wav = new Audio("audio/gunsound.wav");
 
 // start game modal
 addEventListener("load", () => {
@@ -72,7 +73,7 @@ function reduceHealth() {
 }
 
 function increaseHealth() {
-  player.health += 10;
+  player.health += 20;
   health_progress.value = player.health;
 }
 
@@ -108,6 +109,7 @@ class Projectile {
 
   update() {
     this.drawProjectile();
+
     this.x = this.x + this.velocity.x;
     this.y = this.y + this.velocity.y;
   }
@@ -158,8 +160,8 @@ class Ghost {
     const angle = Math.PI / 180;
     if (this.radius === 30) {
       ctx.beginPath();
-      ctx.strokeStyle = this.color;
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 5;
       ctx.arc(this.x, this.y, this.radius, angle * 180, angle * 0, false);
       ctx.lineTo(this.x + this.radius, this.y + this.radius);
       ctx.lineTo(this.x + this.radius, this.y + this.radius);
@@ -171,10 +173,16 @@ class Ghost {
       ctx.lineTo(this.x - this.radius, this.y + this.radius);
       ctx.lineTo(this.x - this.radius, this.y);
       ctx.stroke();
+      ctx.arc(this.x - 15, this.y, 2.5, angle * 180, angle * 360, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.arc(this.x + 15, this.y, 2.5, angle * 180, angle * 360, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
     } else if (this.radius == 20) {
       ctx.beginPath();
       ctx.strokeStyle = this.color;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 5;
       ctx.arc(this.x, this.y, this.radius, angle * 180, angle * 0, false);
       ctx.lineTo(this.x + this.radius, this.y + this.radius);
       ctx.lineTo(this.x + this.radius, this.y + this.radius);
@@ -185,6 +193,16 @@ class Ghost {
       ctx.lineTo(this.x - 13.3, this.y + this.radius - 6.7);
       ctx.lineTo(this.x - this.radius, this.y + this.radius);
       ctx.lineTo(this.x - this.radius, this.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = 3;
+      ctx.arc(this.x - 10, this.y, 2, angle * 0, angle * 360, false);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = 3;
+      ctx.arc(this.x + 10, this.y, 2, angle * 0, angle * 360, false);
       ctx.stroke();
     }
     // else {
@@ -300,11 +318,11 @@ function createGhosts(intervalTime) {
     let x;
     let y;
     if (Math.random() < 0.5) {
-      x = Math.random() < 0.5 ? 0 - this.radius : canvas.width + this.radius;
+      x = Math.random() < 0.5 ? -60 : canvas.width + 60;
       y = Math.random() * canvas.height - 50;
     } else {
       x = Math.random() * canvas.width;
-      y = Math.random() < 0.5 ? 0 - this.radius : null;
+      y = Math.random() < 0.5 ? -50 : null;
     }
 
     const color = colors[Math.floor(Math.random() * colors.length)];
@@ -356,7 +374,7 @@ function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-  ctx.fillStyle = "rgba(3, 8, 31,0.25)";
+  ctx.fillStyle = "rgba(3, 8, 31,1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
   player.drawPlayer();
@@ -422,7 +440,7 @@ function animate() {
       reduceHealth();
     }
 
-    // test distance between each of the projectiles in the parojectile array.
+    // test distance between projectile and ghost in the parojectile array.
     // Math.hypot tests distance between two items
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
@@ -446,7 +464,7 @@ function animate() {
         }
 
         // to prevent animate from trying to draw the removed items
-        if (ghost.radius - 10 > 5) {
+        if (ghost.radius - 10 > 10) {
           // score
           score += 50;
           score_span.innerHTML = `Score: ${score}`;
@@ -474,6 +492,7 @@ function animate() {
 addEventListener("click", (event) => {
   //console.log(event.clientX,event.clientY)
 
+  gunSound_wav.play();
   // angle from center of player to mouse
   const angle = Math.atan2(
     event.clientY - canvas.height,
@@ -503,15 +522,15 @@ addEventListener("click", (event) => {
 startGame2_button.addEventListener("click", () => {
   modal_container.classList.remove("show");
   animate();
-  createGhosts(5000);
+  createGhosts(2000);
   createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(3000);
+    createGhosts(1000);
   }, 10000);
   setTimeout(() => {
-    createGhosts(2000);
+    createGhosts(500);
   }, 20000);
 });
 
@@ -536,15 +555,15 @@ function restart() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   animate();
-  createGhosts(5000);
+  createGhosts(2000);
   createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(3000);
+    createGhosts(1000);
   }, 10000);
   setTimeout(() => {
-    createGhosts(2000);
+    createGhosts(500);
   }, 20000);
 }
 
