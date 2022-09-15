@@ -320,10 +320,10 @@ function createGhosts(intervalTime) {
     let y;
     if (Math.random() < 0.5) {
       x = Math.random() < 0.5 ? -60 : canvas.width + 60;
-      y = Math.random() * canvas.height - 50;
+      y = Math.random() * canvas.height - 60;
     } else {
       x = Math.random() * canvas.width;
-      y = Math.random() < 0.5 ? -50 : null;
+      y = Math.random() < 0.5 ? -60 : null;
     }
 
     const color = colors[Math.floor(Math.random() * colors.length)];
