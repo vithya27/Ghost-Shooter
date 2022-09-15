@@ -55,10 +55,10 @@ body {
 
 .modal,
 .gameover {
-  color: rgba(3, 8, 31, 0.2);
+  color: rgba(3, 8, 31, 1);
   background-color: white;
   border-radius: 5px;
-  border: rgba(3, 8, 31, 0.2) 3px dashed;
+  border: rgba(3, 8, 31, 1) 3px dashed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,13 +69,12 @@ body {
 #start-game:hover,
 #start-game2:hover,
 #restart:hover {
-  background-color: rgba(3, 8, 31, 0.2);
+  background-color: rgba(3, 8, 31, 1);
   border: white 1px solid;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
   color: white;
   padding: 4px;
   font-family: "Audiowide", cursive;
-  font-size: 20px;
 }
 
 #start-game,
@@ -87,6 +86,11 @@ body {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
   padding: 4px;
   font-family: "Audiowide", cursive;
+  font-size: 20px;
+}
+
+canvas {
+  background-color: rgba(3, 8, 31, 0.1);
 }
 
 #health {

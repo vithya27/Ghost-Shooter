@@ -20,7 +20,7 @@ body {
   width: 100%;
   color: white;
   display: inline-flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: rgba(3, 8, 31, 1);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
