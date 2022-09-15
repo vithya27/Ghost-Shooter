@@ -73,8 +73,9 @@ function reduceHealth() {
 }
 
 function increaseHealth() {
-  player.health += 20;
+  player.health += 10;
   health_progress.value = player.health;
+  console.log(player.health);
 }
 
 // Create projectile array to imitate a stream of bullets
@@ -424,7 +425,7 @@ function animate() {
       );
       if (distance - heart.height - projectile.radius < 1) {
         hearts.splice(index, 1);
-        projectile.splice(projectileIndex, 1);
+        projectiles.splice(projectileIndex, 1);
       }
     });
   });
@@ -501,8 +502,8 @@ addEventListener("click", (event) => {
 
   // set velocity
   const velocity = {
-    x: Math.cos(angle) * 3,
-    y: Math.sin(angle) * 3,
+    x: Math.cos(angle) * 4,
+    y: Math.sin(angle) * 4,
   };
 
   // console.log(angle);
@@ -527,10 +528,10 @@ startGame2_button.addEventListener("click", () => {
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(1500);
   }, 10000);
   setTimeout(() => {
-    createGhosts(500);
+    createGhosts(1000);
   }, 20000);
 });
 
@@ -560,10 +561,10 @@ function restart() {
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(1500);
   }, 10000);
   setTimeout(() => {
-    createGhosts(500);
+    createGhosts(1000);
   }, 20000);
 }
 
