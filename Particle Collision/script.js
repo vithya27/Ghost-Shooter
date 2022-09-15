@@ -291,7 +291,7 @@ function createHearts() {
     };
 
     hearts.push(new Heart(x, y, 50, 50, undefined, velocity));
-  }, 10000);
+  }, 20000);
 }
 
 // Animate projectiles
@@ -454,8 +454,8 @@ startGame2_button.addEventListener("click", () => {
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createEnemies(1500);
-  }, 10000);
+    createEnemies(1000);
+  }, 20000);
 });
 
 function restart() {
@@ -485,9 +485,9 @@ restart_button &&
     gameover_modal.classList.remove("show");
     restart();
     animate();
-    createEnemies(3000);
+    createEnemies(10000);
     createHearts();
     setTimeout(() => {
-      createEnemies(1500);
+      createEnemies(100);
     }, 10000);
   });
