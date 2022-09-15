@@ -310,7 +310,7 @@ function createGhosts(intervalTime) {
   interval = setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
 
-    // target cannot be too small. sets a range 7-30
+    // target cannot be too small
     const radii = [30, 20];
     const radius = radii[Math.floor(Math.random() * radii.length)];
 
