@@ -61,7 +61,6 @@ class Player {
   }
 }
 
-let playerDamage;
 // Reduce health
 function reduceHealth() {
   player.health = player.health - 5;
@@ -69,13 +68,26 @@ function reduceHealth() {
   damage.classList.add("player-damage");
   setTimeout(function () {
     damage.classList.remove("player-damage");
-  }, 400);
+  }, 300);
 }
 
 function increaseHealth() {
   player.health += 10;
   health_progress.value = player.health;
 }
+
+// Create projectile array to imitate a stream of bullets
+let projectiles = [];
+
+// Create particles array
+let particles = [];
+
+// Create ghosts array
+let ghosts = [];
+
+let hearts = [];
+// Create Player
+let player = new Player(canvas.width / 2, canvas.height, 40, 100);
 
 // Create Projectiles class
 
@@ -124,9 +136,9 @@ class Particle {
   }
 }
 
-// Create Enemies
+// Create Ghosts
 
-class Enemy {
+class Ghost {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
     this.y = y;
@@ -136,15 +148,70 @@ class Enemy {
   }
 
   // same logic as projectiles
-  drawEnemy() {
+  drawGhost() {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    ctx.fillStyle = this.color;
-    ctx.fill();
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 3;
+    ctx.moveTo(this.x - this.radius, this.y);
+    ctx.lineTo(this.x + this.radius * 2, this.y);
+
+    const angle = Math.PI / 180;
+    if (this.radius === 30) {
+      ctx.beginPath();
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = 3;
+      ctx.arc(this.x, this.y, this.radius, angle * 180, angle * 0, false);
+      ctx.lineTo(this.x + this.radius, this.y + this.radius);
+      ctx.lineTo(this.x + this.radius, this.y + this.radius);
+      ctx.lineTo(this.x + this.radius - 10, this.y + this.radius - 10);
+      ctx.lineTo(this.x + this.radius - 20, this.y + this.radius);
+      ctx.lineTo(this.x, this.y + this.radius - 10);
+      ctx.lineTo(this.x - 10, this.y + this.radius);
+      ctx.lineTo(this.x - 20, this.y + this.radius - 10);
+      ctx.lineTo(this.x - this.radius, this.y + this.radius);
+      ctx.lineTo(this.x - this.radius, this.y);
+      ctx.stroke();
+    } else if (this.radius == 20) {
+      ctx.beginPath();
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = 3;
+      ctx.arc(this.x, this.y, this.radius, angle * 180, angle * 0, false);
+      ctx.lineTo(this.x + this.radius, this.y + this.radius);
+      ctx.lineTo(this.x + this.radius, this.y + this.radius);
+      ctx.lineTo(this.x + this.radius - 6.7, this.y + this.radius - 6.7);
+      ctx.lineTo(this.x + this.radius - 13.3, this.y + this.radius);
+      ctx.lineTo(this.x, this.y + this.radius - 6.7);
+      ctx.lineTo(this.x - 6.7, this.y + this.radius);
+      ctx.lineTo(this.x - 13.3, this.y + this.radius - 6.7);
+      ctx.lineTo(this.x - this.radius, this.y + this.radius);
+      ctx.lineTo(this.x - this.radius, this.y);
+      ctx.stroke();
+    }
+    // else {
+    //   ctx.beginPath();
+    //   ctx.strokeStyle = this.color;
+    //   ctx.lineWidth = 3;
+    //   ctx.arc(this.x, this.y, this.radius, angle * 180, angle * 0, false);
+    //   ctx.lineTo(this.x + this.radius, this.y + this.radius);
+    //   ctx.lineTo(this.x + this.radius, this.y + this.radius);
+    //   ctx.lineTo(this.x + this.radius - 2.5, this.y + this.radius - 2.5);
+    //   ctx.lineTo(this.x + this.radius - 5, this.y + this.radius);
+    //   ctx.lineTo(this.x, this.y + this.radius - 2.5);
+    //   ctx.lineTo(this.x - 2.5, this.y + this.radius);
+    //   ctx.lineTo(this.x - 5, this.y + this.radius - 2.5);
+    //   ctx.lineTo(this.x - this.radius, this.y + this.radius);
+    //   ctx.lineTo(this.x - this.radius, this.y);
+    //   ctx.stroke();
+    // }
+
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    // ctx.fillStyle = this.color;
+    // ctx.fill();
   }
 
   update() {
-    this.drawEnemy();
+    this.drawGhost();
     this.x = this.x + this.velocity.x;
     this.y = this.y + this.velocity.y;
   }
@@ -217,39 +284,27 @@ class Heart {
   }
 }
 
-// Create projectile array to imitate a stream of bullets
-let projectiles = [];
-
-// Create particles array
-let particles = [];
-
-// Create enemies array
-let enemies = [];
-
-let hearts = [];
-// Create Player
-let player = new Player(canvas.width / 2, canvas.height, 40, 100);
-
 let interval;
 
-function createEnemies(intervalTime) {
+function createGhosts(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
 
     // target cannot be too small. sets a range 7-30
-    const radius = Math.random() * (30 - 10) + 10;
+    const radii = [30, 20];
+    const radius = radii[Math.floor(Math.random() * radii.length)];
 
     // must spawn outside the canvas and not too near the player itself.
 
     let x;
     let y;
     if (Math.random() < 0.5) {
-      x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
-      y = Math.random() * canvas.height - 100;
+      x = Math.random() < 0.5 ? 0 - this.radius : canvas.width + this.radius;
+      y = Math.random() * canvas.height - 50;
     } else {
       x = Math.random() * canvas.width;
-      y = Math.random() < 0.5 ? 0 - radius : null;
+      y = Math.random() < 0.5 ? 0 - this.radius : null;
     }
 
     const color = colors[Math.floor(Math.random() * colors.length)];
@@ -262,7 +317,7 @@ function createEnemies(intervalTime) {
       y: Math.sin(angle) * 1.5,
     };
 
-    enemies.push(new Enemy(x, y, radius, color, velocity));
+    ghosts.push(new Ghost(x, y, radius, color, velocity));
   }, intervalTime);
 }
 
@@ -275,11 +330,11 @@ function createHearts() {
     let x;
     let y;
     if (Math.random() < 0.5) {
-      x = Math.random() < 0.5 ? 0 - width : canvas.width + width;
-      y = Math.random() * canvas.height - height;
+      x = Math.random() < 0.5 ? 0 - this.width : canvas.width + this.width;
+      y = Math.random() * canvas.height - this.height;
     } else {
       x = Math.random() * canvas.width;
-      y = Math.random() < 0.5 ? 0 - height : null;
+      y = Math.random() < 0.5 ? 0 - this.height : null;
     }
 
     const angle = Math.atan2(canvas.height - y, canvas.width / 2 - x);
@@ -301,7 +356,7 @@ function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-  ctx.fillStyle = "rgba(3, 8, 31,0.1)";
+  ctx.fillStyle = "rgba(3, 8, 31,0.25)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
   player.drawPlayer();
@@ -338,8 +393,7 @@ function animate() {
   hearts.forEach((heart, index) => {
     heart.update();
     const distance = Math.hypot(player.x - heart.x, player.y - heart.y);
-    // console.log(distance - enemy.radius - player.radius);
-    // calculate distance between player and enemy
+    // calculate distance between player and ghost
 
     if (distance - heart.height - player.radius < 1) {
       hearts.splice(index, 1);
@@ -357,14 +411,14 @@ function animate() {
     });
   });
 
-  enemies.forEach((enemy, index) => {
-    enemy.update();
-    const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-    // console.log(distance - enemy.radius - player.radius);
-    // calculate distance between player and enemy
+  ghosts.forEach((ghost, index) => {
+    ghost.update();
+    const distance = Math.hypot(player.x - ghost.x, player.y - ghost.y);
+    // console.log(distance - ghost.radius - player.radius);
+    // calculate distance between player and ghost
 
-    if (distance - enemy.radius - player.radius < 1) {
-      enemies.splice(index, 1);
+    if (distance - ghost.radius - player.radius < 1) {
+      ghosts.splice(index, 1);
       reduceHealth();
     }
 
@@ -372,19 +426,19 @@ function animate() {
     // Math.hypot tests distance between two items
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
-        projectile.x - enemy.x,
-        projectile.y - enemy.y
+        projectile.x - ghost.x,
+        projectile.y - ghost.y
       );
-      // projectile and enemy touch then remove that particular enemy and projectile.
-      if (distance - enemy.radius - projectile.radius < 1) {
+      // projectile and ghost touch then remove that particular ghost and projectile.
+      if (distance - ghost.radius - projectile.radius < 1) {
         // create explosion
-        for (let index = 0; index < enemy.radius / 2; index++) {
+        for (let index = 0; index < ghost.radius / 2; index++) {
           particles.push(
             new Particle(
               projectile.x,
               projectile.y,
               Math.random() * 2,
-              enemy.color,
+              ghost.color,
               { x: (Math.random() - 0.5) * 5, y: (Math.random() - 0.5) * 5 },
               undefined
             )
@@ -392,16 +446,16 @@ function animate() {
         }
 
         // to prevent animate from trying to draw the removed items
-        if (enemy.radius - 10 > 5) {
+        if (ghost.radius - 10 > 5) {
           // score
           score += 50;
           score_span.innerHTML = `Score: ${score}`;
-          enemy.radius -= 10;
+          ghost.radius -= 10;
           projectiles.splice(projectileIndex, 1);
         } else {
           score += 150;
           score_span.innerHTML = `Score: ${score}`;
-          enemies.splice(index, 1);
+          ghosts.splice(index, 1);
           projectiles.splice(projectileIndex, 1);
         }
       }
@@ -449,12 +503,15 @@ addEventListener("click", (event) => {
 startGame2_button.addEventListener("click", () => {
   modal_container.classList.remove("show");
   animate();
-  createEnemies(3000);
+  createGhosts(5000);
   createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createEnemies(1000);
+    createGhosts(3000);
+  }, 10000);
+  setTimeout(() => {
+    createGhosts(2000);
   }, 20000);
 });
 
@@ -468,8 +525,8 @@ function restart() {
   // Create particles array
   particles = [];
 
-  // Create enemies array
-  enemies = [];
+  // Create ghosts array
+  ghosts = [];
 
   hearts = [];
 
@@ -478,16 +535,21 @@ function restart() {
   finalScore_h2.innerHTML = score;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  animate();
+  createGhosts(5000);
+  createHearts();
+  // if you just put setTimeout, it will run it immediately
+  // have to put it as an anonymous function
+  setTimeout(() => {
+    createGhosts(3000);
+  }, 10000);
+  setTimeout(() => {
+    createGhosts(2000);
+  }, 20000);
 }
 
 restart_button &&
   restart_button.addEventListener("click", () => {
     gameover_modal.classList.remove("show");
     restart();
-    animate();
-    createEnemies(10000);
-    createHearts();
-    setTimeout(() => {
-      createEnemies(100);
-    }, 10000);
   });
