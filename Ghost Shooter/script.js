@@ -34,8 +34,6 @@ class Player {
 
     this.image = new Image();
     this.image.src = "img/planet3.png";
-
-    // this.image = image;
     this.image.onload = () => {
       this.isLoaded = true;
     };
@@ -92,6 +90,7 @@ class Projectile {
     this.color = color;
     this.velocity = velocity;
   }
+  
   drawProjectile() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -101,7 +100,6 @@ class Projectile {
 
   update() {
     this.drawProjectile();
-
     this.x = this.x + this.velocity.x;
     this.y = this.y + this.velocity.y;
   }
@@ -117,6 +115,7 @@ class Particle {
     this.velocity = velocity;
     this.alpha = alpha;
   }
+  
   drawParticle() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -196,6 +195,7 @@ class Ghost {
       ctx.arc(this.x + 10, this.y, 2, angle * 0, angle * 360, false);
       ctx.stroke();
     }
+    // To add smaller ghost in the future
     // else {
     //   ctx.beginPath();
     //   ctx.strokeStyle = this.color;
@@ -301,13 +301,11 @@ function createGhosts(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
-
-    // target cannot be too small
+    
     const radii = [30, 20];
     const radius = radii[Math.floor(Math.random() * radii.length)];
 
     // must spawn outside the canvas and not too near the player itself.
-
     let x;
     let y;
     if (Math.random() < 0.5) {
@@ -443,7 +441,7 @@ function animate() {
       );
       // projectile and ghost touch then remove that particular ghost and projectile.
       if (distance - ghost.radius - projectile.radius < 1) {
-        // create explosion
+        // create explosion with number of particles to be half the radius of ghost
         for (let index = 0; index < ghost.radius / 2; index++) {
           particles.push(
             new Particle(
@@ -546,11 +544,10 @@ function restart() {
   finalScore_h2.innerHTML = score;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
   animate();
   createGhosts(1500);
   createHearts();
-  // if you just put setTimeout, it will run it immediately
-  // have to put it as an anonymous function
   setTimeout(() => {
     createGhosts(1000);
   }, 10000);
