@@ -29,5 +29,5 @@ These are some features I hope to implement in the future:
 
 # Credits and Acknowledgements
 
-Kenney.nl
-Chris Courses on YouTube
+- Kenney.nl for the planet png
+- Chris Courses on YouTube for his amazing tutorials
