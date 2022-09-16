@@ -7,7 +7,7 @@ const health_progress = document.getElementById("health");
 const score_span = document.getElementById("score");
 const damage = document.getElementById("flash-red");
 const modal_container = document.querySelector(".modal-container");
-const startGame2_button = document.getElementById("start-game2");
+const startGame_button = document.getElementById("start-game");
 const gameover_modal = document.querySelector(".gameover-container");
 const restart_button = document.getElementById("restart");
 const finalScore_h2 = document.querySelector(".finalScore");
@@ -15,7 +15,7 @@ const stylesheet = document.querySelector("#style");
 const jsfile = document.querySelector("#script");
 const gunSound_wav = new Audio("audio/gunsound.wav");
 
-// start game modal
+// Start Game Modal
 addEventListener("load", () => {
   modal_container.classList.add("show");
 });
@@ -23,16 +23,6 @@ addEventListener("load", () => {
 // Make canvas full screen
 canvas.width = innerWidth;
 canvas.height = innerHeight - 50;
-
-// Dark mode/light mode
-// function lightModeFiles() {
-//   stylesheet.setAttribute("href", "lightmode.css");
-//   jsfile.setAttribute("src", "scriptdarkmode.js");
-//   console.log(stylesheet);
-//   console.log(jsfile);
-// }
-
-// lightModeFiles();
 
 // Create Player Class
 class Player {
@@ -62,7 +52,7 @@ class Player {
   }
 }
 
-// Reduce health
+// Reduce Health
 function reduceHealth() {
   player.health = player.health - 5;
   health_progress.value = player.health;
@@ -72,10 +62,10 @@ function reduceHealth() {
   }, 300);
 }
 
+// Increase Health
 function increaseHealth() {
   player.health += 10;
   health_progress.value = player.health;
-  console.log(player.health);
 }
 
 // Create projectile array to imitate a stream of bullets
@@ -87,12 +77,13 @@ let particles = [];
 // Create ghosts array
 let ghosts = [];
 
+// Create hearts array
 let hearts = [];
+
 // Create Player
 let player = new Player(canvas.width / 2, canvas.height, 40, 100);
 
-// Create Projectiles class
-
+// Create Projectile class
 class Projectile {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -116,6 +107,7 @@ class Projectile {
   }
 }
 
+// Create Particle class
 class Particle {
   constructor(x, y, radius, color, velocity, alpha = 0.01) {
     this.x = x;
@@ -139,8 +131,7 @@ class Particle {
   }
 }
 
-// Create Ghosts
-
+// Create Ghost class
 class Ghost {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -150,7 +141,6 @@ class Ghost {
     this.velocity = velocity;
   }
 
-  // same logic as projectiles
   drawGhost() {
     ctx.beginPath();
     ctx.strokeStyle = this.color;
@@ -236,6 +226,7 @@ class Ghost {
   }
 }
 
+// Create Heart class
 class Heart {
   constructor(x, y, width, height, color = "red", velocity) {
     this.x = x;
@@ -305,6 +296,7 @@ class Heart {
 
 let interval;
 
+// Create Ghosts
 function createGhosts(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
@@ -342,6 +334,7 @@ function createGhosts(intervalTime) {
 
 let heartInterval;
 
+// Create Hearts
 function createHearts() {
   clearInterval(heartInterval);
   heartInterval = setInterval(() => {
@@ -365,17 +358,17 @@ function createHearts() {
     };
 
     hearts.push(new Heart(x, y, 50, 50, undefined, velocity));
-  }, 20000);
+  }, 10000);
 }
 
-// Animate projectiles
+// Animate
 let requestID;
 let score = 0;
 function animate() {
   // to loop animate over and over again
   const requestID = requestAnimationFrame(animate);
   // to see each individual particle drawn.
-  ctx.fillStyle = "rgba(3, 8, 31,1)";
+  ctx.fillStyle = "rgba(3, 8, 31,0.9)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw player after so that player is not wiped out
   player.drawPlayer();
@@ -433,7 +426,6 @@ function animate() {
   ghosts.forEach((ghost, index) => {
     ghost.update();
     const distance = Math.hypot(player.x - ghost.x, player.y - ghost.y);
-    // console.log(distance - ghost.radius - player.radius);
     // calculate distance between player and ghost
 
     if (distance - ghost.radius - player.radius < 1) {
@@ -491,8 +483,6 @@ function animate() {
 
 // Add Event Listener for click event and take the projectile and pass into array to simulate bullets
 addEventListener("click", (event) => {
-  //console.log(event.clientX,event.clientY)
-
   gunSound_wav.play();
   // angle from center of player to mouse
   const angle = Math.atan2(
@@ -506,8 +496,6 @@ addEventListener("click", (event) => {
     y: Math.sin(angle) * 4,
   };
 
-  // console.log(angle);
-
   projectiles.push(
     new Projectile(
       // to spawn from the player
@@ -520,21 +508,23 @@ addEventListener("click", (event) => {
   );
 });
 
-startGame2_button.addEventListener("click", () => {
+// Eventlistener for Start Game button
+startGame_button.addEventListener("click", () => {
   modal_container.classList.remove("show");
   animate();
-  createGhosts(2000);
+  createGhosts(1500);
   createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(1500);
+    createGhosts(1000);
   }, 10000);
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(800);
   }, 20000);
 });
 
+// Restart Function
 function restart() {
   // Create Player
   player = new Player(canvas.width / 2, canvas.height, 40, 100);
@@ -556,18 +546,19 @@ function restart() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   animate();
-  createGhosts(2000);
+  createGhosts(1500);
   createHearts();
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(1500);
+    createGhosts(1000);
   }, 10000);
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(800);
   }, 20000);
 }
 
+// Eventlistener for Restart button
 restart_button &&
   restart_button.addEventListener("click", () => {
     gameover_modal.classList.remove("show");

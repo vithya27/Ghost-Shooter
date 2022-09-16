@@ -4,7 +4,7 @@
   cursor: crosshair;
 }
 
-body {
+body.light {
   margin: 0;
   background-color: white;
   /* remove double click selection */
@@ -15,7 +15,7 @@ body {
   font-family: "Audiowide", cursive;
 }
 
-.header {
+.header.light {
   height: 30px;
   width: 100%;
   color: rgba(3, 8, 31, 1);
@@ -30,8 +30,8 @@ body {
   -ms-user-select: none;
 }
 
-.modal-container,
-.gameover-container {
+.modal-container.light,
+.gameover-container.light {
   background-color: white;
   position: fixed;
   top: 0;
@@ -41,8 +41,8 @@ body {
   display: none;
 }
 
-.modal-container.show,
-.gameover-container.show {
+.modal-container.show.light,
+.gameover-container.show.light {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,8 +53,8 @@ body {
   background-color: white;
 }
 
-.modal,
-.gameover {
+.modal.light,
+.gameover.light {
   color: rgba(3, 8, 31, 1);
   background-color: white;
   border-radius: 5px;
@@ -66,9 +66,9 @@ body {
   padding: 20px;
 }
 
-#start-game:hover,
-#start-game2:hover,
-#restart:hover {
+#start-game.light:hover,
+#start-game2.light:hover,
+#restart.light:hover {
   background-color: rgba(3, 8, 31, 1);
   border: white 1px solid;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
@@ -77,9 +77,9 @@ body {
   font-family: "Audiowide", cursive;
 }
 
-#start-game,
-#start-game2,
-#restart {
+#start-game.light,
+#start-game2.light,
+#restart.light {
   background-color: white;
   border: rgba(3, 8, 31, 1) 1px solid;
   color: rgba(3, 8, 31, 1);
@@ -89,11 +89,11 @@ body {
   font-size: 20px;
 }
 
-canvas {
+canvas.light {
   background-color: rgba(3, 8, 31, 0.1);
 }
 
-#health {
+#health.light {
   border-radius: 1px;
   height: 20px;
   width: 100%;
@@ -101,17 +101,17 @@ canvas {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0);
 }
 
-progress::-webkit-progress-bar {
+progress::-webkit-progress-bar.light {
   background-color: transparent;
   border-radius: 7px;
 }
-progress::-webkit-progress-value {
+progress::-webkit-progress-value.light {
   background-color: #8e58c1;
   border-radius: 7px;
   box-shadow: 1px 1px 5px 3px #0b2245;
 }
 
-#score {
+#score.light {
   position: fixed;
   color: rgba(3, 8, 31, 1);
   margin-left: 5px;
