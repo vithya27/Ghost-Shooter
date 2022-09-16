@@ -358,7 +358,7 @@ function createHearts() {
     };
 
     hearts.push(new Heart(x, y, 50, 50, undefined, velocity));
-  }, 10000);
+  }, 20000);
 }
 
 // Animate
@@ -405,8 +405,8 @@ function animate() {
   hearts.forEach((heart, index) => {
     heart.update();
     const distance = Math.hypot(player.x - heart.x, player.y - heart.y);
-    // calculate distance between player and ghost
 
+    // calculate distance between player and heart
     if (distance - heart.height - player.radius < 1) {
       hearts.splice(index, 1);
       increaseHealth();
@@ -416,6 +416,8 @@ function animate() {
         projectile.x - heart.x,
         projectile.y - heart.y
       );
+
+      // calculate distance between projectile and heart
       if (distance - heart.height - projectile.radius < 1) {
         hearts.splice(index, 1);
         projectiles.splice(projectileIndex, 1);
@@ -426,16 +428,15 @@ function animate() {
   ghosts.forEach((ghost, index) => {
     ghost.update();
     const distance = Math.hypot(player.x - ghost.x, player.y - ghost.y);
-    // calculate distance between player and ghost
 
+    // calculate distance between player and ghost
     if (distance - ghost.radius - player.radius < 1) {
       ghosts.splice(index, 1);
       reduceHealth();
     }
 
-    // test distance between projectile and ghost in the parojectile array.
-    // Math.hypot tests distance between two items
     projectiles.forEach((projectile, projectileIndex) => {
+      // Math.hypot tests distance between two items
       const distance = Math.hypot(
         projectile.x - ghost.x,
         projectile.y - ghost.y
@@ -481,7 +482,7 @@ function animate() {
   }
 }
 
-// Add Event Listener for click event and take the projectile and pass into array to simulate bullets
+// Event Listener for click event and take the projectile and pass into array to simulate bullets
 addEventListener("click", (event) => {
   gunSound_wav.play();
   // angle from center of player to mouse
