@@ -500,7 +500,7 @@ addEventListener("click", (event) => {
       // to spawn from the player
       canvas.width / 2,
       canvas.height,
-      7,
+      20,
       "#e2f0cb",
       velocity
     )
