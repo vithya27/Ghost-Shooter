@@ -90,7 +90,7 @@ class Projectile {
     this.color = color;
     this.velocity = velocity;
   }
-  
+
   drawProjectile() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -115,7 +115,7 @@ class Particle {
     this.velocity = velocity;
     this.alpha = alpha;
   }
-  
+
   drawParticle() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
@@ -301,7 +301,7 @@ function createGhosts(intervalTime) {
   clearInterval(interval);
   interval = setInterval(() => {
     const colors = ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#B5EAD7", "#C7CEEA"];
-    
+
     const radii = [30, 20];
     const radius = radii[Math.floor(Math.random() * radii.length)];
 
@@ -500,7 +500,7 @@ addEventListener("click", (event) => {
       // to spawn from the player
       canvas.width / 2,
       canvas.height,
-      5,
+      7,
       "#e2f0cb",
       velocity
     )
@@ -516,10 +516,10 @@ startGame_button.addEventListener("click", () => {
   // if you just put setTimeout, it will run it immediately
   // have to put it as an anonymous function
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(1200);
   }, 10000);
   setTimeout(() => {
-    createGhosts(800);
+    createGhosts(1000);
   }, 20000);
 });
 
@@ -544,15 +544,15 @@ function restart() {
   finalScore_h2.innerHTML = score;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   animate();
   createGhosts(1500);
   createHearts();
   setTimeout(() => {
-    createGhosts(1000);
+    createGhosts(1200);
   }, 10000);
   setTimeout(() => {
-    createGhosts(800);
+    createGhosts(1000);
   }, 20000);
 }
 
